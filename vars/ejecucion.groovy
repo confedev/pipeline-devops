@@ -49,7 +49,7 @@ def call(){
                 slackSend color: 'good', message: "[Felipe Contreras][${JOB_NAME}][${params.compileTool}] Ejecución Exitosa.", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
             }
             failure{
-                slackSend color: 'danger', message: "[Felipe Contreras][${BUILD_TAG}][${params.compileTool}] Ejecucion fallida en stage [${env.STAGE}]", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
+                slackSend color: 'danger', message: "[Felipe Contreras][${JOB_NAME}][${params.compileTool}] Ejecucion fallida en stage [${env.STAGE}]", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
             }
         }
     }
