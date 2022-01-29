@@ -46,7 +46,7 @@ def call(){
                 sh "echo 'fase success'"
             }
             failure {
-                sh "echo 'fase failure'"
+                sh "echo 'fase failure in $env.STAGE'"
             }
         }
     }
