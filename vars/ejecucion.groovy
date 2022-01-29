@@ -26,7 +26,7 @@ def call(){
                     switch(params.compileTool)
                         {
                             case 'Maven':
-                                print 'Ejecutando Maven';.
+                                print 'Ejecutando Maven';
                                 maven.call()
                             break;
                             case 'Gradle':
