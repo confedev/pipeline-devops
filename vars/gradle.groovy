@@ -14,10 +14,11 @@ def listStagesOrder = [
 ]
 
 def selectStages(stagesList){
+    sh "echo 'Seleccionado Stages específicos'"
     if(stagesList.isEmpty()){
+        sh "echo 'Se seleccionan todos los stages'"
         allStages()
     }else{
-        sh "Seleccionado Stages específicos"
         sh "echo ${stagesList}"
     }
 }
