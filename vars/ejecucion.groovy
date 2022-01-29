@@ -17,6 +17,11 @@ def call(){
                 choices: ['Maven', 'Gradle'],
                 description: 'Seleccione herramienta de compilacion'
             )
+            string(
+                name:'stages',
+                description: 'Ingrese los stages para ejecutar',
+                trim: true
+            )
         }
         stages {
             stage("Pipeline"){
@@ -27,11 +32,11 @@ def call(){
                         {
                             case 'Maven':
                                 print 'Ejecutando Maven'
-                                maven.call()
+                                maven.call(stages)
                             break;
                             case 'Gradle':
                                 print 'Ejecutando Gradle'
-                                gradle.call()
+                                gradle.call(stages)
                             break;
                         }
                     }
