@@ -71,7 +71,7 @@ def sSonar(){
 }
 
 def sCurlSpring(){
-    stage("Paso 5: Curl Springboot Gradle sleep 60"){
+    stage("Paso 5: Curl Springboot Maven sleep 60"){
         env.STAGE = env.STAGE_NAME
         sh "mvn spring-boot:run &"
         sh "sleep 60 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
