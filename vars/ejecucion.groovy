@@ -32,7 +32,7 @@ def call(){
                         {
                             case 'Maven':
                                 print 'Ejecutando Maven'
-                                maven.call(stages)
+                                maven.call()
                             break;
                             case 'Gradle':
                                 print 'Ejecutando Gradle'
