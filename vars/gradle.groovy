@@ -1,6 +1,28 @@
 def call(stages){
-    def stagesList = stages.split(';');
-    sh "echo ${stagesList}"
+    def stagesList = stages.split(';')
+    selectStages(stagesList)
+}
+
+def listStagesOrder = [
+    'build': 'sBuild',
+    'sonar': 'sSonar',
+    'curl_spring': 'sCurlSpring',
+    'upload_nexus': 'sUploadNexus',
+    'dowload_nexus': 'sDownloadNexus',
+    'upload_artifact': 'sUploadArtifact',
+    'test_artifact': 'sTestArtifact'
+]
+
+def selectStages(stagesList){
+    if(stagesList.isEmpty()){
+        allStages()
+    }else{
+        sh "Seleccionado Stages específicos"
+        sh "echo ${stagesList}"
+    }
+}
+
+def allStages(){
     sBuild()
     sSonar()
     sCurlSpring()
