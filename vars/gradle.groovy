@@ -1,25 +1,28 @@
+import utilities.*
+
 def call(stages){
-    def stagesList = stages.split(';')
-    selectStages(stagesList)
-}
+    def listStagesOrder = [
+        'build': 'sBuild',
+        'sonar': 'sSonar',
+        'curl_spring': 'sCurlSpring',
+        'upload_nexus': 'sUploadNexus',
+        'dowload_nexus': 'sDownloadNexus',
+        'upload_artifact': 'sUploadArtifact',
+        'test_artifact': 'sTestArtifact'
+    ]
+    def arrayUtils = new array.arrayExtentions();
+    def stagesArray = []
+        stagesArray = arrayUtils.searchKeyInArray(stages, ";", listStagesOrder)
 
-def listStagesOrder = [
-    'build': 'sBuild',
-    'sonar': 'sSonar',
-    'curl_spring': 'sCurlSpring',
-    'upload_nexus': 'sUploadNexus',
-    'dowload_nexus': 'sDownloadNexus',
-    'upload_artifact': 'sUploadArtifact',
-    'test_artifact': 'sTestArtifact'
-]
-
-def selectStages(stagesList){
-    sh "echo 'Seleccionado Stages específicos'"
-    if(stagesList.isEmpty()){
-        sh "echo 'Se seleccionan todos los stages'"
+    if (stagesArray.isEmpty()) {
+        echo 'El pipeline se ejecutará completo'
         allStages()
-    }else{
-        sh "echo ${stagesList}"
+    } else {
+        echo 'Stages a ejecutar :' + stages
+        stagesArray.each{ stageFunction ->//variable as param
+            echo 'Ejecutando ' + stageFunction
+            "${stageFunction}"()
+        }
     }
 }
 

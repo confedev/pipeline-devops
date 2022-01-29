@@ -27,16 +27,17 @@ def call(){
             stage("Pipeline"){
                 steps {
                     script{
+                    env.STAGE  = env.STAGE_NAME
                     print 'Compile Tool: ' + params.compileTool;
                     switch(params.compileTool)
                         {
                             case 'Maven':
-                                print 'Ejecutando Maven'
-                                maven.call()
+                                figlet  "Maven"
+                                maven.call(params.stages)
                             break;
                             case 'Gradle':
-                                print 'Ejecutando Gradle'
-                                gradle.call(stages)
+                                figlet  "Gradle"
+                                gradle.call(params.stages)
                             break;
                         }
                     }
@@ -44,14 +45,11 @@ def call(){
             }
         }
         post {
-            always {
-                sh "echo 'fase always executed post'"
+            success{
+                slackSend color: 'good', message: "[Mentor Devops] [${JOB_NAME}] [${BUILD_TAG}] Ejecución Exitosa", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
             }
-            success {
-                sh "echo 'fase success'"
-            }
-            failure {
-                sh "echo 'fase failure in $env.STAGE'"
+            failure{
+                slackSend color: 'danger', message: "[Mentor Devops] [${env.JOB_NAME}] [${BUILD_TAG}] Ejecucion fallida en stage [${env.STAGE}]", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
             }
         }
     }
