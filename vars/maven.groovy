@@ -2,7 +2,7 @@ import utilities.*
 
 def call(stages){
     def listStagesOrder = [
-        'compile', 'sCompile',
+        'compile': 'sCompile',
         'test': 'sTest',
         'build': 'sBuild',
         'sonar': 'sSonar',
