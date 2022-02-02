@@ -23,6 +23,7 @@ def call(){
                     script{
                     env.STAGE  = env.STAGE_NAME
                     print 'Compile Tool: ' + params.compileTool;
+                    sh "echo 'Ejecutando Branch: $BRANCH_NAME!'"
                     switch(params.compileTool)
                         {
                             case 'Maven':
