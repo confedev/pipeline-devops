@@ -36,13 +36,13 @@ def allStages(){
 }
 
 def sBuild(){
-    stage("Build and Test"){
+    stage("Gradle: Build and Test"){
         sh "gradle clean build"
     }
 }
 
 def sSonar(){
-    stage("Sonar - Análisis Estático"){
+    stage("Gradle: Sonar - Análisis Estático"){
         sh "echo 'Análisis Estático!'"
         withSonarQubeEnv('sonarqube') {
             sh 'chmod +x gradlew && ./gradlew sonarqube -Dsonar.projectKey=ejemplo-gradle -Dsonar.java.binaries=build'
@@ -51,14 +51,14 @@ def sSonar(){
 }
 
 def sCurlSpring(){
-    stage("Curl Springboot Gradle sleep 60"){
+    stage("Gradle: Curl Springboot Gradle sleep 60"){
         sh "gradle bootRun&"
         sh "sleep 60 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
     }
 }
 
 def sUploadNexus(){
-    stage("Subir Nexus"){
+    stage("Gradle: Subir Nexus"){
         nexusPublisher nexusInstanceId: 'nexus',
         nexusRepositoryId: 'devops-usach-nexus',
         packages: [
@@ -81,19 +81,19 @@ def sUploadNexus(){
 }
 
 def sDownloadNexus(){
-    stage("Descargar Nexus"){
+    stage("Gradle: Descargar Nexus"){
         sh ' curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
     }
 }
 
 def sRunArtifact(){
-    stage("Levantar Artefacto Jar"){
+    stage("Gradle: Levantar Artefacto Jar"){
         sh 'nohup bash java -jar DevOpsUsach2020-0.0.1.jar & >/dev/null'
     }
 }
 
 def sTestArtifact(){
-    stage("Testear Artefacto - Dormir(Esperar 60sg)"){
+    stage("Gradle: Testear Artefacto - Dormir(Esperar 60sg)"){
         sh "sleep 60 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
     }
 }

@@ -41,25 +41,25 @@ def allStages(){
 }
 
 def sCompile(){
-    stage("Compile"){
+    stage("Maven: Compile"){
         sh "mvn clean compile -e"
     }
 }
 
 def sTest(){
-    stage("Test"){
+    stage("Maven: Test"){
         sh "mvn clean test -e"
     }
 }
 
 def sBuild(){
-    stage("Build"){
+    stage("Maven: Build"){
         sh "mvn clean test -e"
     }
 }
 
 def sSonar(){
-    stage("Sonar - Análisis Estático"){
+    stage("Maven: Sonar - Análisis Estático"){
         sh "echo 'Análisis Estático!'"
         withSonarQubeEnv('sonarqube') {
             sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=ejemplo-gradle -Dsonar.java.binaries=build'
@@ -68,14 +68,14 @@ def sSonar(){
 }
 
 def sCurlSpring(){
-    stage("Curl Springboot Maven sleep 60"){
+    stage("Maven: Curl Springboot Maven sleep 60"){
         sh "mvn spring-boot:run &"
         sh "sleep 60 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
     }
 }
 
 def sUploadNexus(){
-    stage("Subir Nexus"){
+    stage("Maven: Subir Nexus"){
         nexusPublisher nexusInstanceId: 'nexus',
         nexusRepositoryId: 'devops-usach-nexus',
         packages: [
@@ -98,19 +98,19 @@ def sUploadNexus(){
 }
 
 def sDownloadNexus(){
-    stage("Descargar Nexus"){
+    stage("Maven: Descargar Nexus"){
         sh ' curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1/DevOpsUsach2020-0.0.1.jar" -O'
     }
 }
 
 def sRunArtifact(){
-    stage("Levantar Artefacto Jar"){
+    stage("Maven: Levantar Artefacto Jar"){
         sh 'nohup bash java -jar DevOpsUsach2020-0.0.1.jar & >/dev/null'
     }
 }
 
 def sTestArtifact(){
-    stage("Testear Artefacto - Dormir(Esperar 60sg)"){
+    stage("Maven: Testear Artefacto - Dormir(Esperar 60sg)"){
         sh "sleep 60 && curl -X GET 'http://localhost:8081/rest/mscovid/test?msg=testing'"
     }
 }
