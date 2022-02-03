@@ -2,7 +2,7 @@ def call(){
     pipeline {
         agent any
         triggers {
-            GenericTrigger{
+            GenericTrigger(
                 genericVariables: [
                     [key: 'ref', value: '$.ref']
                 ],
@@ -11,13 +11,14 @@ def call(){
                     [key: 'stages', regexpFilter: '']
                 ],
                 causeString: 'Triggered on $compileTool',
-                token: 'abc123',
+                token: 'laboratorio-mod3',
                 tokenCredentialId: '',
                 printContributedVariables: true,
-                silentResponse: true,
-                regextpFilterText: '$ref',
+                printPostContent: true,
+                silentResponse: false,
+                regexpFilterText: '$ref',
                 regexpFilterExpression: 'refs/heads/' + BRANCH_NAME
-            }
+            )
         }
         environment {
             NEXUS_USER         = credentials('token-nexus-curl-useradmin')
