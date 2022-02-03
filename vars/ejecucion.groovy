@@ -21,8 +21,8 @@ def call(){
             stage("Pipeline"){
                 steps {
                     script{
-                        def branch_name_split = env.BRANCH_NAME.toString().split("/")[1]
                         sh "echo 'Rama detectada: $BRANCH_NAME!'"
+                        def branch_name_split = env.BRANCH_NAME.toString().split("/")[0]
                         print 'Tipo de rama: ' + branch_name_split;
                         switch(branch_name_split){
                             case "develop":
