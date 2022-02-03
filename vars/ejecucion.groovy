@@ -22,13 +22,13 @@ def call(){
                 steps {
                     script{
                         sh "echo 'Rama detectada: $BRANCH_NAME!'"
-                        if(env.BRANCH_NAME.toString().contains('develop')){
+                        if(env.BRANCH_NAME.toString().contains("develop")){
                                 sh "echo 'Ejecutando Pipeline Develop'"
                                 ci.call(params.stages)
-                        } else if(env.BRANCH_NAME.toString().contains('feature')){
+                        } else if(env.BRANCH_NAME.toString().contains("feature")){
                                 sh "echo 'Ejecutando Pipeline Feature para $BRANCH_NAME'"
                                 ci.call(params.stages)
-                        } else if(env.BRANCH_NAME.toString().contains('release')){
+                        } else if(env.BRANCH_NAME.toString().contains("release")){
                                 sh "echo 'Ejecutando Pipeline Release para $BRANCH_NAME'"
                                 cd.call(params.stages)
                         } else {
