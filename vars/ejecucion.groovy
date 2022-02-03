@@ -1,21 +1,27 @@
 def call(){
     pipeline {
         agent any
+        trigger {
+            GenericTrigger{
+                genericVariables: [
+                    [key: 'ref', value: '$.ref']
+                ],
+                genericRequestVariables: [
+                    [key: 'compileTool', regexpFilter: ''],
+                    [key: 'stages', regexpFilter: '']
+                ],
+                causeString: 'Triggered on $compileTool',
+                token: 'abc123',
+                tokenCredentialId: '',
+                printContributedVariables: true,
+                silentResponse: true,
+                regextpFilterText: '$ref',
+                regexpFilterExpression: 'refs/heads/' + BRANCH_NAME
+            }
+        }
         environment {
             NEXUS_USER         = credentials('token-nexus-curl-useradmin')
             NEXUS_PASSWORD     = credentials('token-nexus-curl-passadmin')
-        }
-        parameters {
-            choice(
-                name:'compileTool',
-                choices: ['Maven', 'Gradle'],
-                description: 'Seleccione herramienta de compilacion'
-            )
-            string(
-                name:'stages',
-                description: 'Ingrese los stages para ejecutar',
-                trim: true
-            )
         }
         stages {
             stage("Pipeline"){
@@ -23,8 +29,8 @@ def call(){
                     script{
                         sh "echo 'Rama detectada: $BRANCH_NAME!'"
                         env.STAGE  = env.STAGE_NAME
-                        env.COMPILE_TOOL = params.compileTool
-                        print 'Compile Tool: ' + params.compileTool;
+                        env.COMPILE_TOOL = compileTool
+                        print 'Compile Tool: ' + compileTool;
                         switch(env.COMPILE_TOOL){
                             case 'Maven':
                                 figlet  "Maven"
@@ -35,13 +41,13 @@ def call(){
                         }
                         if(env.BRANCH_NAME.toString().contains("develop")){
                                 sh "echo 'Ejecutando Pipeline Develop'"
-                                ci.call(params.stages,params.compileTool)
+                                ci.call(stages,compileTool)
                         } else if(env.BRANCH_NAME.toString().contains("feature")){
                                 sh "echo 'Ejecutando Pipeline Feature para $BRANCH_NAME'"
-                                ci.call(params.stages,params.compileTool)
+                                ci.call(stages,compileTool)
                         } else if(env.BRANCH_NAME.toString().contains("release")){
                                 sh "echo 'Ejecutando Pipeline Release para $BRANCH_NAME'"
-                                cd.call(params.stages,params.compileTool)
+                                cd.call(stages,compileTool)
                         } else {
                             sh "echo 'La rama $BRANCH_NAME no tiene asociado un pipeline disponible'"
                         }
@@ -51,10 +57,10 @@ def call(){
         }
         post {
             success{
-                slackSend color: 'good', message: "[Grupo 3][${JOB_NAME}][${params.compileTool}] Ejecución Exitosa.", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
+                slackSend color: 'good', message: "[Grupo 3][${JOB_NAME}][${compileTool}] Ejecución Exitosa.", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
             }
             failure{
-                slackSend color: 'danger', message: "[Grupo 3][${JOB_NAME}][${params.compileTool}] Ejecucion fallida en stage [${env.STAGE}]", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
+                slackSend color: 'danger', message: "[Grupo 3][${JOB_NAME}][${compileTool}] Ejecucion fallida en stage [${env.STAGE}]", teamDomain: 'dipdevopsusac-tr94431', tokenCredentialId: 'token-slack'
             }
         }
     }
