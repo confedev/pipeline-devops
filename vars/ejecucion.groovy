@@ -22,24 +22,17 @@ def call(){
                 steps {
                     script{
                         sh "echo 'Rama detectada: $BRANCH_NAME!'"
-                        def branch_name_split = env.BRANCH_NAME.toString().split("/")[0]
-                        print 'Tipo de rama: ' + branch_name_split;
-                        switch(branch_name_split){
-                            case "develop":
+                        if(env.BRANCH_NAME.toString().contains('develop')){
                                 sh "echo 'Ejecutando Pipeline Develop'"
                                 ci.call(params.stages)
-                            break;
-                            case "feature":
+                        } else if(env.BRANCH_NAME.toString().contains('feature')){
                                 sh "echo 'Ejecutando Pipeline Feature para $BRANCH_NAME'"
                                 ci.call(params.stages)
-                            break;
-                            case "release":
+                        } else if(env.BRANCH_NAME.toString().contains('release')){
                                 sh "echo 'Ejecutando Pipeline Release para $BRANCH_NAME'"
                                 cd.call(params.stages)
-                                // Validar formato nombre rama release (opcional)
-                            break;
-                            default:
-                                sh "echo 'La rama $BRANCH_NAME no tiene un Pipeline asociado'"
+                        } else {
+                            sh "echo 'La rama $BRANCH_NAME no tiene asociado un pipeline disponible'"
                         }
                         env.STAGE  = env.STAGE_NAME
                         print 'Compile Tool: ' + params.compileTool;
