@@ -1,7 +1,7 @@
 def call(){
     pipeline {
         agent any
-        trigger {
+        triggers {
             GenericTrigger{
                 genericVariables: [
                     [key: 'ref', value: '$.ref']
