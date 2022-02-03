@@ -22,30 +22,29 @@ def call(){
                 steps {
                     script{
                         sh "echo 'Rama detectada: $BRANCH_NAME!'"
+                        env.STAGE  = env.STAGE_NAME
+                        env.COMPILE_TOOL = params.compileTool
+                        print 'Compile Tool: ' + params.compileTool;
+                        switch(env.COMPILE_TOOL){
+                            case 'Maven':
+                                figlet  "Maven"
+                            break;
+                            case 'Gradle':
+                                figlet  "Gradle"
+                            break;
+                        }
                         if(env.BRANCH_NAME.toString().contains("develop")){
                                 sh "echo 'Ejecutando Pipeline Develop'"
-                                ci.call(params.stages)
+                                ci.call(params.stages,params.compileTool)
                         } else if(env.BRANCH_NAME.toString().contains("feature")){
                                 sh "echo 'Ejecutando Pipeline Feature para $BRANCH_NAME'"
-                                ci.call(params.stages)
+                                ci.call(params.stages,params.compileTool)
                         } else if(env.BRANCH_NAME.toString().contains("release")){
                                 sh "echo 'Ejecutando Pipeline Release para $BRANCH_NAME'"
-                                cd.call(params.stages)
+                                cd.call(params.stages,params.compileTool)
                         } else {
                             sh "echo 'La rama $BRANCH_NAME no tiene asociado un pipeline disponible'"
                         }
-                        env.STAGE  = env.STAGE_NAME
-                        print 'Compile Tool: ' + params.compileTool;
-                        /*switch(params.compileTool){
-                                case 'Maven':
-                                    figlet  "Maven"
-                                    maven.call(params.stages)
-                                break;
-                                case 'Gradle':
-                                    figlet  "Gradle"
-                                    gradle.call(params.stages)
-                                break;
-                        }*/
                     }
                 }
             }

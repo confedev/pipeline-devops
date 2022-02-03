@@ -1,6 +1,6 @@
 import utilities.*
 
-def call(stages){
+def call(stages,compileTool){
     figlet  "CD"
     def listStagesOrder = [
         'compile': 'sCompile',
