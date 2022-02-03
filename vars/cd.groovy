@@ -48,6 +48,14 @@ def sNexusDownload(){
     stage("nexusDownload"){
         env.STAGE = env.STAGE_NAME
         sh "echo 'Ejecutando: $STAGE_NAME!'"
+        switch(env.COMPILE_TOOL){
+            case 'Maven':
+                maven.call('download_nexus')
+            break;
+            case 'Gradle':
+                gradle.call('download_nexus')
+            break;
+        }
     }
 }
 
@@ -55,6 +63,14 @@ def sRun(){
     stage("run"){
         env.STAGE = env.STAGE_NAME
         sh "echo 'Ejecutando: $STAGE_NAME!'"
+        switch(env.COMPILE_TOOL){
+            case 'Maven':
+                maven.call('run_artifact')
+            break;
+            case 'Gradle':
+                gradle.call('run_artifact')
+            break;
+        }
     }
 }
 
@@ -62,6 +78,14 @@ def sTest(){
     stage("test"){
         env.STAGE = env.STAGE_NAME
         sh "echo 'Ejecutando: $STAGE_NAME!'"
+        switch(env.COMPILE_TOOL){
+            case 'Maven':
+                maven.call('test_artifact')
+            break;
+            case 'Gradle':
+                gradle.call('test_artifact')
+            break;
+        }
     }
 }
 

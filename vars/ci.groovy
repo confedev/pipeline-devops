@@ -36,6 +36,14 @@ def sCompile(){
     stage("compile"){
         env.STAGE = env.STAGE_NAME
         sh "echo 'Ejecutando: $STAGE_NAME!'"
+        switch(env.COMPILE_TOOL){
+            case 'Maven':
+                maven.call('compile')
+            break;
+            case 'Gradle':
+                gradle.call('build')
+            break;
+        }
     }
 }
 
@@ -43,6 +51,14 @@ def sUnitTest(){
     stage("unitTest"){
         env.STAGE = env.STAGE_NAME
         sh "echo 'Ejecutando: $STAGE_NAME!'"
+        switch(env.COMPILE_TOOL){
+            case 'Maven':
+                maven.call('test')
+            break;
+            case 'Gradle':
+                gradle.call('build')
+            break;
+        }
     }
 }
 
@@ -50,6 +66,14 @@ def sSonar(){
     stage("sonar"){
         env.STAGE = env.STAGE_NAME
         sh "echo 'Ejecutando: $STAGE_NAME!'"
+        switch(env.COMPILE_TOOL){
+            case 'Maven':
+                maven.call('sonar')
+            break;
+            case 'Gradle':
+                gradle.call('sonar')
+            break;
+        }
     }
 }
 
@@ -57,6 +81,14 @@ def sNexusUpload(){
     stage("nexusUpload"){
         env.STAGE = env.STAGE_NAME
         sh "echo 'Ejecutando: $STAGE_NAME!'"
+        switch(env.COMPILE_TOOL){
+            case 'Maven':
+                maven.call('upload_nexus')
+            break;
+            case 'Gradle':
+                gradle.call('upload_nexus')
+            break;
+        }
     }
 }
 
