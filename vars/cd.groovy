@@ -1,6 +1,7 @@
 import utilities.*
 
-def call(){
+def call(stages){
+    figlet  "CD"
     def listStagesOrder = [
         'gitDiff': 'sGitDiff',
         'nexusDownload': 'sNexusDownload',
@@ -39,41 +40,48 @@ def allStages(){
 def sGitDiff(){
     stage("gitDiff"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }
 
 def sNexusDownload(){
     stage("nexusDownload"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }
 
 def sRun(){
     stage("run"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }
 
 def sTest(){
     stage("test"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }
 
 def gitMergeMaster(){
     stage("sGitMergeMaster"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }
 
 def gitMergeDevelop(){
     stage("sGitMergeDevelop"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }
 
 def gitTagMaster(){
     stage("sGitTagMaster"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }

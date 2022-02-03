@@ -1,6 +1,7 @@
 import utilities.*
 
-def call(){
+def call(stages){
+    figlet  "CD"
     def listStagesOrder = [
         'compile': 'sCompile',
         'unitTest': 'sUnitTest',
@@ -34,29 +35,34 @@ def allStages(){
 def sCompile(){
     stage("compile"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }
 
 def sUnitTest(){
     stage("unitTest"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }
 
 def sSonar(){
     stage("sonar"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }
 
 def sNexusUpload(){
     stage("nexusUpload"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }
 
 def sGitCreateRelease(){
     stage("gitCreateRelease"){
         env.STAGE = env.STAGE_NAME
+        sh "echo 'Ejecutando: $STAGE_NAME!'"
     }
 }
